@@ -60,11 +60,13 @@ def main():
         dat = read_datos(datos)
         campoID = st.selectbox("ID",options=dat.columns,)
         campoSep = st.selectbox("Grupo",options=dat.columns)
-        groups = dat[campoSep].unique()
-        st.write(groups)
-        tempZip = split(df,dat,campoID,campoSep,rsplen)
-        st.download_button("Descargar archivos",data=tempZip.getvalue(),file_name='Respuestas.zip',mime="application/zip")
-        tempZip.close()
+        if campoID != campoSep:
+            groups = dat[campoSep].unique()
+            if groups.shape[0] != dat.shape[0]:
+                st.write(groups)
+                tempZip = split(df,dat,campoID,campoSep,rsplen)
+                st.download_button("Descargar archivos",data=tempZip.getvalue(),file_name='Respuestas.zip',mime="application/zip")
+                tempZip.close()
             
 if __name__ == '__main__':
     main()
