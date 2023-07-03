@@ -24,7 +24,8 @@ def read_datos(path):
         path,
         dtype=str,
         encoding='iso-8859-1'
-    )
+    ).fillna("")
+    st.write(df)
     df = df.applymap(lambda x: x[2:-1] if x.startswith('="') and x.endswith('"') else x)
     return df
 
