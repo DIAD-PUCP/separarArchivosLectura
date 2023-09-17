@@ -27,6 +27,16 @@ def read_datos(path):
     ).fillna("")
     st.write(df)
     df = df.applymap(lambda x: x[2:-1] if x.startswith('="') and x.endswith('"') else x)
+    versiones = {
+        'ESTUDIOS GENERALES CIENCIAS': 'CIENCIAS',
+        'ESTUDIOS GENERALES LETRAS': 'LETRAS',
+        'ARQUITECTURA Y URBANISMO': 'ARQUITECTURA',
+        'EDUCACION' : 'EDUCACION',
+        'ARTE Y DISEÑO': 'LETRAS',
+        'ARTES ESCÉNICAS': 'LETRAS',
+        'GASTRONOMÍA; HOTELERÍA Y TURISMO': 'LETRAS',
+    }
+    df['VERSIÓN'] = df['UNIDAD'].apply(lambda x: versiones[x] if x in versiones else 'LETRAS')
     return df
 
 @st.cache_data
@@ -53,7 +63,7 @@ def main():
         idlen = st.number_input('Longitud del ID',help='Cuantos caracteres tiene el ID en el archivo',value=5,format='%d',min_value=1)
         idlen = int(idlen)
         start = st.number_input('Caracter de inicio de las respuestas',help='A partir de que caracter en el archivo empiezan las respuestas el primer caracter es 0',value=5,format='%d',min_value=1)
-        rsplen = st.number_input('Cantidad máx de respuestas',help='Cuantos caracteres tiene como máximo las respuestas, los excesos se descartan',value=120,format='%d',min_value=1)
+        rsplen = st.number_input('Cantidad máx de respuestas',help='Cuantos caracteres tiene como máximo las respuestas, los excesos se descartan',value=76,format='%d',min_value=1)
         datos = st.file_uploader('Archivo de datos',help='El archivo que contiene los datos')
         
     if archivo and datos:
