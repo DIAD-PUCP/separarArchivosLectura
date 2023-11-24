@@ -8,10 +8,11 @@ def read_ans_file(path,idlen=5,start=5,rsplen=76):
     df = pd.read_fwf(
         path,
         header=None,
+        colspecs=[(0,1000)],
         dtype=str,
-        encoding='iso-8859-1'
+        encoding='iso-8859-1',
+        names = ['line']
     )
-    df.columns = ['line']
     df['EXAMEN'] = df['line'].str[:idlen]
     maxline = df['line'].str.len().max()
     end = min(start+rsplen,maxline)
@@ -26,7 +27,7 @@ def read_datos(path):
         encoding='iso-8859-1'
     ).fillna("")
     st.write(df)
-    df = df.applymap(lambda x: x[2:-1] if x.startswith('="') and x.endswith('"') else x)
+    df = df.map(lambda x: x[2:-1] if x.startswith('="') and x.endswith('"') else x)
     versiones = {
         'ESTUDIOS GENERALES CIENCIAS': 'CIENCIAS',
         'ESTUDIOS GENERALES LETRAS': 'LETRAS',
